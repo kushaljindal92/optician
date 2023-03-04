@@ -28,7 +28,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), array(
             "name" => 'bail|required|max:40',
             'email' => 'bail|required|unique:customers|email:rfc,dns',
-            "phone" => 'bail|required|numeric|digits:10',
+            "phone" => 'bail|required|unique:customers|numeric|digits:10',
             "address"=>'bail|required|max:255',
             "city"=>'bail|required|max:50',
             "state"=>'bail|required|max:50',
@@ -54,7 +54,7 @@ class CustomerController extends Controller
         $customer->gender=$request->gender;
         $customer->status=$request->status;
         $customer->save();
-        return response()->json($customer);
+        return response()->json($customer,201);
     }
 
     public function update(Request $request,$id){
