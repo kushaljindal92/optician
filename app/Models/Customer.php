@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Customer extends Model
 {
+    use Searchable;
     /**
      * The primary key associated with the table.
      *

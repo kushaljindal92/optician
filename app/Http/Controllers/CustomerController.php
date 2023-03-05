@@ -8,26 +8,43 @@ use Illuminate\Support\Facades\Validator;
 
 /**
  * @TODO error logging
+ * @TODO do unit testing
  */
 class CustomerController extends Controller
 {
 
-    public function index(){
-        $customer =  Customer::all();
+    public function search(Request $request){
+        $customer = Customer::search($request->get('query'))->paginate();
+        return response()->json($customer);
+    }
+    public function index(): \Illuminate\Http\JsonResponse
+    {
+        $customer =  Customer::paginate();
         return response()->json($customer);
     }
 
-    public function show($id){
+    public function show($id): \Illuminate\Http\JsonResponse
+    {
         $customer =  Customer::find($id);
         return response()->json($customer);
     }
-    public function delete($id){
+    public function delete($id): \Illuminate\Http\JsonResponse
+    {
         $customer =  Customer::find($id);
-        $customer->delete();
-        return response()->json($customer);
+        if(!empty($customer)){
+            $customer->delete();
+            $response = array('Customer has been deleted successfully');
+        }else{
+            $response = array(
+                'Customer do not find'
+            );
+        }
+
+        return response()->json($response,200);
     }
 
-    public function create(Request $request){
+    public function create(Request $request): \Illuminate\Http\JsonResponse
+    {
 
         $validator = Validator::make($request->all(), array(
             "name" => 'bail|required|max:40',
@@ -61,7 +78,8 @@ class CustomerController extends Controller
         return response()->json($customer,201);
     }
 
-    public function update(Request $request,$id){
+    public function update(Request $request,$id): \Illuminate\Http\JsonResponse
+    {
 
         $customer = Customer::findOrFail($id);
         if(empty($customer)) {

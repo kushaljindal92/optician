@@ -25,3 +25,5 @@ $router->get('/customer/{id}','CustomerController@show');
 $router->delete('/customer/{id}','CustomerController@delete');
 $router->post('/customer','CustomerController@create');
 $router->put('/customer/{id}','CustomerController@update');
+$router->get('/customer/search','CustomerController@search');
+
