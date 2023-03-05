@@ -12,6 +12,10 @@ class CustomerController extends Controller
     public function import(){
         //will do if it is required in future
     }
+
+    public function cachedResults(){
+    }
+
     public function search(Request $request): \Illuminate\Http\JsonResponse
     {
         $customer = Customer::search($request->get('query'))->paginate();
@@ -31,22 +35,15 @@ class CustomerController extends Controller
     public function delete($id): \Illuminate\Http\JsonResponse
     {
         $customer =  Customer::find($id);
-        $response="";
         if(!empty($customer)){
             try{
                 $customer->delete();
-                $response = array('Customer has been deleted successfully');
             }catch (\Exception $e){
                 Log::critical($e->getMessage());
             }
-
-        }else{
-            $response = array(
-                'Customer do not find'
-            );
         }
 
-        return response()->json($response,200);
+        return response()->json(null,204);
     }
 
     public function create(Request $request): \Illuminate\Http\JsonResponse
@@ -69,16 +66,16 @@ class CustomerController extends Controller
         }
 
         $customer =  new Customer();
-        $customer->name = $request->name;
-        $customer->email=$request->email;
-        $customer->phone=$request->phone;
-        $customer->address=$request->address;
-        $customer->city=$request->city;
-        $customer->state=$request->state;
-        $customer->customer_type=$request->customer_type;
-        $customer->birthdate=date($request->birthdate);
-        $customer->gender=$request->gender;
-        $customer->status=$request->status;
+        $customer->name = $request->input('name');
+        $customer->email=$request->input('email');
+        $customer->phone=$request->input('phone');
+        $customer->address=$request->input('address');
+        $customer->city=$request->input('city');
+        $customer->state=$request->input('state');
+        $customer->customer_type=$request->input('customer_type');
+        $customer->birthdate=date($request->input('birthdate'));
+        $customer->gender=$request->input('gender');
+        $customer->status=$request->input('status');
         try {
             $customer->save();
         }catch (\Exception $e){

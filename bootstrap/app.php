@@ -52,8 +52,6 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Laravel\Scout\ScoutServiceProvider::class);
 $app->register(Yab\MySQLScout\Providers\MySQLScoutServiceProvider::class);
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
