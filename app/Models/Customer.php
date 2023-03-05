@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
+/**
+ * @method static paginate()
+ * @method static findOrFail($id)
+ */
 class Customer extends Model
 {
     use Searchable;

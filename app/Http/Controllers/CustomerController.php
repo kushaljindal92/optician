@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
-/**
- * @TODO error logging
- * @TODO do unit testing
- */
 class CustomerController extends Controller
 {
-
-    public function search(Request $request){
+    public function import(){
+        //will do if it is required in future
+    }
+    public function search(Request $request): \Illuminate\Http\JsonResponse
+    {
         $customer = Customer::search($request->get('query'))->paginate();
         return response()->json($customer);
     }
@@ -31,9 +31,15 @@ class CustomerController extends Controller
     public function delete($id): \Illuminate\Http\JsonResponse
     {
         $customer =  Customer::find($id);
+        $response="";
         if(!empty($customer)){
-            $customer->delete();
-            $response = array('Customer has been deleted successfully');
+            try{
+                $customer->delete();
+                $response = array('Customer has been deleted successfully');
+            }catch (\Exception $e){
+                Log::critical($e->getMessage());
+            }
+
         }else{
             $response = array(
                 'Customer do not find'
@@ -45,7 +51,6 @@ class CustomerController extends Controller
 
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {
-
         $validator = Validator::make($request->all(), array(
             "name" => 'bail|required|max:40',
             'email' => 'bail|required|unique:customers|email:rfc,dns',
@@ -74,13 +79,16 @@ class CustomerController extends Controller
         $customer->birthdate=date($request->birthdate);
         $customer->gender=$request->gender;
         $customer->status=$request->status;
-        $customer->save();
+        try {
+            $customer->save();
+        }catch (\Exception $e){
+            Log::critical($e->getMessage());
+        }
         return response()->json($customer,201);
     }
 
     public function update(Request $request,$id): \Illuminate\Http\JsonResponse
     {
-
         $customer = Customer::findOrFail($id);
         if(empty($customer)) {
             return response()->json(["error" => 'Record not found!'], 400);
@@ -100,8 +108,11 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(),400);
         }
-        $customer->fill($request->all())->save();
-
+        try{
+            $customer->fill($request->all())->save();
+        }catch(\Exception $e){
+            Log::critical($e->getMessage());
+        }
         return response()->json($customer,200);
     }
 }
