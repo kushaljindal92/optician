@@ -49,6 +49,9 @@ $app->singleton(
 );
 
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Laravel\Scout\ScoutServiceProvider::class);
+$app->register(Yab\MySQLScout\Providers\MySQLScoutServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
@@ -61,7 +64,7 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 */
 
 $app->configure('app');
-
+$app->configure('scout');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -95,7 +98,7 @@ $app->configure('app');
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
-
+$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

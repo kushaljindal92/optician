@@ -2,27 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
-use App\Models\Eye;
+use App\Models\Customer;
 
 /**
  * @method static paginate()
  * @method static findOrFail($id)
  * @method static find($id)
- * @property mixed $name
- * @property mixed $email
- * @property mixed $phone
- * @property mixed $address
- * @property mixed $city
- * @property mixed $state
- * @property mixed $customer_type
- * @property false|mixed|string $birthdate
- * @property mixed $gender
- * @property mixed $status
+ * @property mixed $amount
+ * @property mixed $refund
+ * @property mixed $balance
+ * @property mixed $comment
+ * @property mixed $axis
  */
-class Customer extends Model
+class Transaction extends Model
 {
     use Searchable;
     /**
@@ -56,19 +50,11 @@ class Customer extends Model
     protected $guarded = [];
 
     /**
-     * Get the transactions for the customer.
+     * Get the customer that owns the transaction.
      */
-    public function transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(Transaction::class);
-    }
-
-    /**
-     * Get the transactions for the customer.
-     */
-    public function eye(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Eye::class);
+        return $this->belongsTo(Customer::class);
     }
 
 }

@@ -20,8 +20,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/customer/search','CustomerController@search');
 $router->get('/customer','CustomerController@index');
 $router->get('/customer/{id}','CustomerController@show');
 $router->delete('/customer/{id}','CustomerController@delete');
 $router->post('/customer','CustomerController@create');
 $router->put('/customer/{id}','CustomerController@update');
+
+
