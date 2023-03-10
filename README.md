@@ -23,3 +23,4 @@ If you discover a security vulnerability within Lumen, please send an e-mail to 
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 # optician
+Backend for optician to handle day to day tasks. Like customer data, their transactions, For whome, who do not know sphisticated CRM.
